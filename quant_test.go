@@ -11,8 +11,8 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/soniakeys/quant"
-	"github.com/soniakeys/quant/median"
+	"github.com/aymanbagabas/quant"
+	"github.com/aymanbagabas/quant/median"
 )
 
 // TestDither tests Sierra24A on png files found in the source directory.

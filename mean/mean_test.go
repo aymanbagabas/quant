@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/soniakeys/quant"
-	"github.com/soniakeys/quant/mean"
+	"github.com/aymanbagabas/quant"
+	"github.com/aymanbagabas/quant/mean"
 )
 
 // TestMean tests the mean quantizer on png files found in the source

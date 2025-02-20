@@ -24,8 +24,8 @@ import (
 	"image/draw"
 	"math"
 
-	"github.com/soniakeys/quant"
-	"github.com/soniakeys/quant/internal"
+	"github.com/aymanbagabas/quant"
+	"github.com/aymanbagabas/quant/internal"
 )
 
 // Quantizer methods implement mean cut color quantization.
@@ -37,8 +37,10 @@ import (
 // The type satisfies both quant.Quantizer and draw.Quantizer interfaces.
 type Quantizer int
 
-var _ quant.Quantizer = Quantizer(0)
-var _ draw.Quantizer = Quantizer(0)
+var (
+	_ quant.Quantizer = Quantizer(0)
+	_ draw.Quantizer  = Quantizer(0)
+)
 
 // Paletted performs color quantization and returns a paletted image.
 //
@@ -175,8 +177,7 @@ func (qz *quantizer) cluster() {
 		if cx == half {
 			// change priorities on existing clusters
 			for x := 0; x < cx; x++ {
-				cs[x].priority =
-					int(uint64(cs[x].priority) * (cs[x].volume >> 16) >> 29)
+				cs[x].priority = int(uint64(cs[x].priority) * (cs[x].volume >> 16) >> 29)
 			}
 		}
 		qz.setPriority(s, cx < half) // set priority for newly split s

@@ -1,1 +1,3 @@
-module "github.com/soniakeys/quant"
+module github.com/aymanbagabas/quant
+
+go 1.18

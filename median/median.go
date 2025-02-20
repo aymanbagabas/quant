@@ -10,10 +10,9 @@ import (
 	"image/color"
 	"image/draw"
 	"math"
-	"sort"
 
-	"github.com/soniakeys/quant"
-	"github.com/soniakeys/quant/internal"
+	"github.com/aymanbagabas/quant"
+	"github.com/aymanbagabas/quant/internal"
 )
 
 // Quantizer methods implement median cut color quantization.
@@ -25,8 +24,10 @@ import (
 // The type satisfies both quant.Quantizer and draw.Quantizer interfaces.
 type Quantizer int
 
-var _ quant.Quantizer = Quantizer(0)
-var _ draw.Quantizer = Quantizer(0)
+var (
+	_ quant.Quantizer = Quantizer(0)
+	_ draw.Quantizer  = Quantizer(0)
+)
 
 // Paletted performs color quantization and returns a paletted image.
 //
@@ -80,9 +81,11 @@ type quantizer struct {
 	pxRGBA func(x, y int) (r, g, b, a uint32) // function to get original image RGBA color values
 }
 
-type point struct{ x, y int32 }
-type chValues []uint16
-type queue []*cluster
+type (
+	point    struct{ x, y int32 }
+	chValues []uint16
+	queue    []*cluster
+)
 
 type cluster struct {
 	px       []point // list of points in the cluster
@@ -294,7 +297,7 @@ func (q *quantizer) medianCut(c *cluster) uint32 {
 		}
 	}
 	// Find cut.
-	sort.Sort(ch)
+	sortSlice(ch)
 	m1 := len(ch) / 2 // median
 	if ch[m1] != ch[m1-1] {
 		return uint32(ch[m1])
@@ -383,6 +386,8 @@ func (qz *quantizer) paletted() *image.Paletted {
 	return pi
 }
 
+func (c chValues) Compare(a, b uint16) int { return int(a) - int(b) }
+
 // Implement sort.Interface for sort in median algorithm.
 func (c chValues) Len() int           { return len(c) }
 func (c chValues) Less(i, j int) bool { return c[i] < c[j] }
@@ -393,13 +398,16 @@ func (q queue) Len() int { return len(q) }
 
 // Priority is number of pixels in cluster.
 func (q queue) Less(i, j int) bool { return len(q[i].px) > len(q[j].px) }
+
 func (q queue) Swap(i, j int) {
 	q[i], q[j] = q[j], q[i]
 }
+
 func (pq *queue) Push(x interface{}) {
 	c := x.(*cluster)
 	*pq = append(*pq, c)
 }
+
 func (pq *queue) Pop() interface{} {
 	q := *pq
 	n := len(q) - 1

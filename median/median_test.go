@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/soniakeys/quant"
-	"github.com/soniakeys/quant/median"
+	"github.com/aymanbagabas/quant"
+	"github.com/aymanbagabas/quant/median"
 )
 
 // TestMedian tests the median quantizer on png files found in the source
